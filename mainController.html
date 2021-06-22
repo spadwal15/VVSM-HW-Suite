@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>VVSM HW Suite</title>
+    <style>
+      h1 {text-align: center;}
+      h2 {text-align: center;}
+    </style>
+  </head>
+  <body>
+    <h1>VVSM HW Suite</h1>
+
+    <!-- Tabs of app -->
+    <div class="hide" id="home">
+      <h2>Welcome</h2>
+
+      <p>Manufacturer : <span id="cpuDetail0"></span></p>
+
+      <p>Brand : <span id="cpuDetail1"></span></p>
+
+      <p>Number of Cores : <span id="cpuDetail2"></span></p>
+
+    </div>
+
+    <div class="hide" id="driver" style="display:none;">
+      <p>driverWindow</p>
+    </div>
+
+    <!-- jquery cdn -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <!-- implementing jQuery -->
+    <script type='text/javascript'>
+
+    function showOne(id) {
+        $('.hide').hide();
+        $('#'+id).css('display','');
+    }
+
+    </script>
+
+    <!-- Send message to main.js -->
+    <script>
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.on('show-driverWindow', (e) => {
+        showOne("driver");
+      });
+      ipcRenderer.on('show-home', (e) => {
+        showOne("home");
+      });
+
+      //cpu details
+      ipcRenderer.send('cpu-info')
+      ipcRenderer.on('cpu-info', (e,data) => {
+        document.getElementById("cpuDetail0").innerHTML=data[0];
+        document.getElementById("cpuDetail1").innerHTML=data[1];
+        document.getElementById("cpuDetail2").innerHTML=data[2];
+      });
+
+    </script>
+
+  </body>
+</html>
