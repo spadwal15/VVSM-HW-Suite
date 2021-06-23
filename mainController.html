@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <link href="https://unpkg.com/tailwindcss@%5E2/dist/tailwind.min.css" rel="stylesheet">
     <title>VVSM HW Suite</title>
     <style>
       h1 {text-align: center;}
@@ -11,14 +12,28 @@
     <h1>VVSM HW Suite</h1>
 
     <!-- Tabs of app -->
-    <div class="hide" id="home">
+    <div class="hide font-bold text-white ml-2" id="home">
       <h2>Welcome</h2>
 
-      <p>Manufacturer : <span id="cpuDetail0"></span></p>
+      <p class= "mt-5">OS : <span  id="osDetail0"></span></p>
 
-      <p>Brand : <span id="cpuDetail1"></span></p>
+      <p class= "mt-5">OS Type : <span id="osDetail1"></span></p>
 
-      <p>Number of Cores : <span id="cpuDetail2"></span></p>
+      <p class= "mt-5">Manufacturer : <span id="cpuDetail0"></span></p>
+
+      <p class= "mt-5">Brand : <span id="cpuDetail1"></span></p>
+
+      <p class= "mt-5">Number of Cores : <span id="cpuDetail2"></span></p>
+
+      <!-- <p>CPU Main Temp : <span id="cpuTempDetail0"></span></p>
+
+      <p>CPU Max Temp : <span id="cpuTempDetail1"></span></p> -->
+
+      <p class= "mt-5">Uptime : <span id="pcDetail0"></span> mins</p>
+
+      <p class= "mt-5">Total Memory (RAM) : <span id="memo0"></span> GB</p>
+
+      <p class= "mt-5">Free Memory (RAM) : <span id="memo1"></span> GB</p>
 
     </div>
 
@@ -49,12 +64,39 @@
         showOne("home");
       });
 
+      //os details
+      ipcRenderer.send('os-info')
+      ipcRenderer.on('os-info', (e,data) => {
+        document.getElementById("osDetail0").innerHTML=data[0];
+      });
+
       //cpu details
       ipcRenderer.send('cpu-info')
       ipcRenderer.on('cpu-info', (e,data) => {
         document.getElementById("cpuDetail0").innerHTML=data[0];
         document.getElementById("cpuDetail1").innerHTML=data[1];
         document.getElementById("cpuDetail2").innerHTML=data[2];
+      });
+
+      ipcRenderer.send('cpu-temp-info')
+      ipcRenderer.on('cpu-temp-info', (e,data) => {
+        document.getElementById("cpuTempDetail0").innerHTML=data[0];
+        document.getElementById("cpuTempDetail1").innerHTML=data[1];
+      });
+
+      //os details
+      ipcRenderer.send('memory')
+      ipcRenderer.on('memory', (e,data) => {
+        document.getElementById("memo0").innerHTML=data[0].toFixed(2);
+      });
+
+      //pc information
+      ipcRenderer.send('com')
+      ipcRenderer.on('com', (e,data) => {
+        document.getElementById("pcDetail0").innerHTML=data[0].toFixed(2);
+        document.getElementById("memo1").innerHTML=data[1].toFixed(2);
+        document.getElementById("osDetail1").innerHTML=data[2];
+
       });
 
     </script>

@@ -8,23 +8,30 @@ const fs = require('fs');
 //importing functions
 const sysMon = require('./sysMon.js')
 
-let mainController;
+app.on('ready', () => {
 
-//Listen for app to be ready
-app.on('ready', function(){
-  //Create new Window
-  mainController = new BrowserWindow({
+  const mainController = new BrowserWindow({
+
+    width:800,
+    height:600,
+    minWidth:400,
+    maxWidth:1920,
+    minHeight:300,
+    maxHeight:1080,
+    backgroundColor: "#3c3c44",
     webPreferences:{
       nodeIntegration:true,
       contextIsolation:false
     }
   });
-  //Load html into Window
+
+  //load HTML
   mainController.loadURL(url.format({
     pathname: path.join(__dirname, 'mainController.html'),
     protocol: 'file:',
-    slashes: true
+    slashes:true
   }));
+
   //mainController.openDevTools()
 
   //Build menu from template
@@ -45,6 +52,7 @@ const mainMenuTemplate = [
       },
       {
         label: 'Quit',
+        accelerator: process.platform == 'darwin' ? 'command+Q' :'ctrl+Q',
         click(){
           app.quit();
         }
