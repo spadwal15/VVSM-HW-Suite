@@ -36,6 +36,18 @@
       document.getElementById("cpuTempDetail1").innerHTML=data[1];
     });
 
+    //gpu details
+    ipcRenderer.send('gpu-info')
+    ipcRenderer.on('gpu-info', (e,data) => {
+      document.getElementById("gpuDetail0").innerHTML=data[0];
+      document.getElementById("gpuDetail1").innerHTML=data[1];
+      document.getElementById("gpuDetail2").innerHTML=data[2];
+      document.getElementById("gpuDetail3").innerHTML=data[3];
+      document.getElementById("gpuDetail4").innerHTML=data[4];
+      document.getElementById("gpuDetail5").innerHTML=data[5];
+      document.getElementById("gpuDetail6").innerHTML=data[6];
+    });
+
     //os details
     ipcRenderer.send('memory')
     ipcRenderer.on('memory', (e,data) => {
@@ -43,11 +55,16 @@
     });
 
     //pc information
-    ipcRenderer.send('com')
-    ipcRenderer.on('com', (e,data) => {
-      document.getElementById("pcDetail0").innerHTML=data[0].toFixed(2);
-      document.getElementById("memo1").innerHTML=data[1].toFixed(2);
-      document.getElementById("osDetail1").innerHTML=data[2];
+    setInterval(function () {
+      ipcRenderer.send('com')
+      console.log("test");
+      ipcRenderer.on('com', (e,data) => {
+        document.getElementById("pcDetail0").innerHTML=data[0].toFixed(2);
+        document.getElementById("memo1").innerHTML=data[1].toFixed(2);
+        document.getElementById("osDetail1").innerHTML=data[2];
+
+    }, 10000);
+
 
     });
 
@@ -118,6 +135,8 @@
         <p class= "mt-5">OS Architecture: <span  id="osDetail0"></span></p>
 
         <p class= "mt-5">OS Type : <span id="osDetail1"></span></p>
+
+        <p class= "mt-5">Uptime : <span id="pcDetail0"></span> mins</p>
       </div>
 
       <div class=" w-3/12 h-2/6 p-4 m-14 flex-grow text-center rounded-lg  bg-gray-400  shadow-lg">
@@ -136,20 +155,31 @@
 
         <p class= "mt-5">Free Memory (RAM) : <span id="memo1"></span> GB</p>
 
-        <p class= "mt-5">Uptime : <span id="pcDetail0"></span> mins</p>
+
       </div>
 
       <div class=" w-3/12 h-2/6 p-4  m-14 flex-grow text-center rounded-lg   bg-gray-400   shadow-lg">
-        <h1>div4
-        </h1>
+        <h1>Graphics</h1>
+        <!-- gpu -->
+        <p class= "mt-5">GPU : <span id="gpuDetail0"></span></p>
+
+        <p class= "mt-5">VRAM : <span id="gpuDetail1"></span> GB</p>
+
+        <p class= "mt-5">Dynamic : <span id="gpuDetail2"></span></p>
+
+        <p class= "mt-5">Display : <span id="gpuDetail3"></span></p>
+
+        <p class= "mt-5">Model : <span id="gpuDetail4"></span></p>
+
+        <p class= "mt-5">Resolution : <span id="gpuDetail5"></span> x <span id="gpuDetail6"></span></</p>
       </div>
       <div class=" w-3/12 h-2/6 p-4  m-14 flex-grow text-center rounded-lg  bg-gray-400   shadow-lg">
-        <h1>div5
-        </h1>
+        <h1>div5</h1>
+
       </div>
       <div class=" w-3/12 h-2/6 p-4  m-14 flex-grow text-center rounded-lg   bg-gray-400   shadow-lg">
-        <h1>div6
-        </h1>
+        <h1>div6</h1>
+
       </div>
 
 

@@ -5,8 +5,7 @@ const os = require('os');
 //system monitoring
 const sysMon = () => {
 
-
-
+    //OS
     ipcMain.on('os-info', e => {
         // CPU information
         si.osInfo().then(osi=>{
@@ -18,6 +17,7 @@ const sysMon = () => {
         }).catch(error => console.error(error));
     });
 
+    //CPU
     ipcMain.on('cpu-info', e => {
         // CPU information
         si.cpu().then(cpu=>{
@@ -44,6 +44,25 @@ const sysMon = () => {
         }).catch(error => console.error(error));
     });
 
+    //GPU
+    ipcMain.on('gpu-info', e => {
+        // GPU information
+        si.graphics().then(graphics=>{
+        const gpu=[];
+        gpu.push(graphics.controllers[0].model,graphics.controllers[0].vram/1024,graphics.controllers[0].vramDynamic,graphics.displays[0].vendor,graphics.displays[0].model,graphics.displays[0].resolutionX,graphics.displays[0].resolutionY);
+
+        //gpuInfo.push(gpu['model']);
+        //gpuInfo.push(gpu['vram']);
+        //gpuInfo.push(gpu['cores']);
+
+        //gpuInfo.push(display['vendor']);
+        //gpuInfo.push(display['model']);
+        //gpuInfo.push(display['resolution']);
+        e.sender.send('gpu-info',gpu);
+        //console.log(gpuInfo);
+        }).catch(error => console.error(error));
+    });
+
     ipcMain.on('com', e => {
 
         // PC information
@@ -53,7 +72,7 @@ const sysMon = () => {
 
         const com=[];
         com.push(Uptime, FreeMemory, OsType)
-    
+
         e.sender.send('com',com);
 
     });
