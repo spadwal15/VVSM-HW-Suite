@@ -1,7 +1,7 @@
 const electron = require('electron');
 const url = require('url')
 const path = require('path')
-const {app, BrowserWindow, Menu} = electron;
+const {app, BrowserWindow} = electron;
 const { ipcMain } = require('electron')
 const fs = require('fs');
 
@@ -15,8 +15,9 @@ app.on('ready', () => {
 
     mainController = new BrowserWindow({
 
-    width:800,
-    height:600,
+    frame:true,
+    width:1280,
+    height:1080,
     minWidth:400,
     maxWidth:1920,
     minHeight:300,
@@ -27,56 +28,12 @@ app.on('ready', () => {
       contextIsolation:false
     }
   });
-
+    mainController.setMenu(null);
   //load HTML
   mainController.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes:true
   }));
-
-  //mainController.openDevTools()
-
-  //Build menu from template
-  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-  //Insert Menu
-  Menu.setApplicationMenu(mainMenu);
-
   sysMon();
 });
-
-//Create menu template
-const mainMenuTemplate = [
-  {
-    label : 'File',
-    submenu:[
-      {
-        label: 'Save Monitoring Data',
-      },
-      {
-        label: 'Quit',
-        accelerator: process.platform == 'darwin' ? 'command+Q' :'ctrl+Q',
-        click(){
-          app.quit();
-        }
-      }
-    ],
-  },
-  {
-    label : 'View',
-    submenu:[
-      {
-        label: 'Home',
-        click(){
-          mainController.webContents.send('show-home')
-        }
-      },
-      {
-        label: 'Driver Info',
-        click(){
-          mainController.webContents.send('show-driverWindow')
-        }
-      }
-    ]
-  }
-];
