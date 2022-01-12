@@ -9,8 +9,6 @@ const fs = require('fs');
 const sysMon = require('./sysMon.js')
 let mainController;
 
-
-
 app.on('ready', () => {
 
     mainController = new BrowserWindow({
@@ -29,11 +27,13 @@ app.on('ready', () => {
     }
   });
     mainController.setMenu(null);
+    mainController.webContents.openDevTools();
   //load HTML
   mainController.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes:true
   }));
-  sysMon();
 });
+
+sysMon();

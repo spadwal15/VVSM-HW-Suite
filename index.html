@@ -9,6 +9,18 @@
   <script src="https://use.fontawesome.com/fed7a163da.js"></script>
   <script>
     const { ipcRenderer } = require('electron')
+    setInterval(function () {
+      ipcRenderer.send('memory');
+
+    }, 1000);
+
+    setInterval(function () {
+      console.log("test");
+      ipcRenderer.send('cpu-temp-info');
+      // Doesn't work yet
+      // Needs admin permissions, start from Powershell(admin)
+    }, 1000);
+
     ipcRenderer.on('show-driverWindow', (e) => {
       showOne("driver");
     });
@@ -30,10 +42,11 @@
       document.getElementById("cpuDetail2").innerHTML=data[2];
     });
 
-    ipcRenderer.send('cpu-temp-info')
+
     ipcRenderer.on('cpu-temp-info', (e,data) => {
       document.getElementById("cpuTempDetail0").innerHTML=data[0];
       document.getElementById("cpuTempDetail1").innerHTML=data[1];
+      document.getElementById("cpuTempDetail2").innerHTML=data[2];
     });
 
     //gpu details
@@ -49,23 +62,17 @@
     });
 
     //os details
-    ipcRenderer.send('memory')
+
     ipcRenderer.on('memory', (e,data) => {
       document.getElementById("memo0").innerHTML=data[0].toFixed(2);
+      document.getElementById("memo1").innerHTML=data[1].toFixed(2);
     });
 
     //pc information
-    setInterval(function () {
       ipcRenderer.send('com')
-      console.log("test");
       ipcRenderer.on('com', (e,data) => {
         document.getElementById("pcDetail0").innerHTML=data[0].toFixed(2);
-        document.getElementById("memo1").innerHTML=data[1].toFixed(2);
-        document.getElementById("osDetail1").innerHTML=data[2];
-
-    }, 10000);
-
-
+        document.getElementById("osDetail1").innerHTML=data[1];
     });
 
   </script>
@@ -146,6 +153,12 @@
         <p class= "mt-5">Model : <span id="cpuDetail1"></span></p>
 
         <p class= "mt-5">Cores : <span id="cpuDetail2"></span></p>
+
+        <p class= "mt-5">Main: <span id="cpuTempDetail0"></span></p>
+
+        <p class= "mt-5">Max: <span id="cpuTempDetail1"></span></p>
+
+        <p class= "mt-5">Cores: <span id="cpuTempDetail2"></span></p>
 
       </div>
 
