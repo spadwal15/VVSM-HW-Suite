@@ -9,6 +9,8 @@ fetch("https://newsapi.org/v2/everything?q=technology&apiKey=d96bcc2dc1134c25ac4
   .then(data => render(data))
 
 function render(data) {
+  
+
   let news = ``;
   let changePage = ``;
 
@@ -20,7 +22,7 @@ function render(data) {
    <a href="${data.articles[i].url}" target="_blank"><h3 class="text-left text-black hover:underline p-3 pl-2  font-sans    text-xl" >${data.articles[i].title}</h3></a>
    <div class="flex flex-row  border-t-2 p-3 border-purple-500  ">
    <img src="${data.articles[i].urlToImage}" class="border-2 border-black rounded-xl " alt="" width="300" height="300">
-   <p class="p-2  break-all text-black hover:text-gray-900 align-baseline "> ${data.articles[i].content}</p>
+   <p class="p-2  break-all text-black hover:text-gray-900 align-baseline  overflow-ellipsis  "> ${data.articles[i].description} </p>
    </div>
    </div>
   
@@ -48,7 +50,7 @@ async function nextPage() {
  <a href="${data.articles[i].url}" target="_blank"><h3 class="text-left text-black hover:underline p-3 pl-2  font-sans    text-xl" >${data.articles[i].title}</h3></a>
  <div class="flex flex-row  border-t-2 p-3 border-purple-500  ">
  <img src="${data.articles[i].urlToImage}" class="border-2 border-black rounded-xl " alt="" width="300" height="300">
- <p class="p-2  break-all text-black hover:text-gray-900 align-baseline "> ${data.articles[i].content}</p>
+ <p class="p-2  break-all text-black hover:text-gray-900 align-baseline "> ${data.articles[i].description}</p>
  </div>
  </div>
 
@@ -76,7 +78,7 @@ async function previousPage() {
  <a href="${data.articles[i].url}" target="_blank"><h3 class="text-left text-black hover:underline p-3 pl-2  font-sans    text-xl" >${data.articles[i].title}</h3></a>
  <div class="flex flex-row  border-t-2 p-3 border-purple-500  ">
  <img src="${data.articles[i].urlToImage}" class="border-2 border-black rounded-xl " alt="" width="300" height="300">
- <p class="p-2  break-all text-black hover:text-gray-900 align-baseline "> ${data.articles[i].content}</p>
+ <p class="p-2  break-all text-black hover:text-gray-900 align-baseline "> ${data.articles[i].description}</p>
  </div>
  </div>
 
@@ -86,6 +88,4 @@ async function previousPage() {
   
   
  }
-
-
 
