@@ -1,6 +1,7 @@
 const si = require('systeminformation');
 const { ipcMain } = require('electron')
 const os = require('os');
+const fs = require('fs');
 
 //system monitoring
 const sysMon = () => {
@@ -89,6 +90,17 @@ const sysMon = () => {
         e.sender.send('memory',memory);
         //console.log(cpuInfo);
         }).catch(error => console.error(error));
+    });
+
+    ipcMain.on('temps', e => {
+        // Temps
+        fs.readFile('Logs/Temps.txt', 'utf8' , (err, data) => {
+          if (err) {
+            console.error(err)
+            return
+          }
+          e.sender.send('temps',data);
+        })
     });
 }
 

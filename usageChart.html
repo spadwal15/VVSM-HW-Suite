@@ -123,7 +123,7 @@
     <script>
 
         const { ipcRenderer } = require('electron')
-     
+
         ipcRenderer.send('memory');
         const ctx = document.getElementById('myChart');
         ipcRenderer.on('memory', (e, data) => {
@@ -133,7 +133,7 @@
                 type: 'pie',
 
                 data: {
-                    labels: ['Total Memory (RAM)', 'Free Memory (RAM)'],
+                    labels: ['Used Memory (RAM)', 'Free Memory (RAM)'],
                     datasets: [{
 
 
