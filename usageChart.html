@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"
         integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <title>Hardware Monitoring Suite</title>
+    <title>Document</title>
 </head>
 
 
@@ -75,7 +75,7 @@
                 class=" w-10/12 h-5/6 p-2 m-2 border-2 justify-self-center border-purple-500 hover:border-purple-400 flex-grow text-center rounded-xl  bg-gray-400   shadow-lg ">
                 <div class="flex flex-col divide-y divide-solid divide-purple-500 active:divide-purple-500">
                     <h1 class="flex justify-between gap-1 font-sans text-lg font-semibold  pl-2 mb-1 ">RAM Usage
-                        <i class="fa fa-info-circle pt-1 pr-1" aria-hidden="true" title="Total Memory pie chart"></i>
+                        <i class="fa fa-info-circle pt-1 pr-1" aria-hidden="true"></i>
                     </h1>
                     <div>
                         <canvas id="myChart"></canvas>
@@ -123,7 +123,7 @@
     <script>
 
         const { ipcRenderer } = require('electron')
-
+     
         ipcRenderer.send('memory');
         const ctx = document.getElementById('myChart');
         ipcRenderer.on('memory', (e, data) => {
@@ -133,7 +133,7 @@
                 type: 'pie',
 
                 data: {
-                    labels: ['Used Memory (RAM)', 'Free Memory (RAM)'],
+                    labels: ['Total Memory (RAM)', 'Free Memory (RAM)'],
                     datasets: [{
 
 
@@ -178,10 +178,59 @@
 
         });
 
-        ipcRenderer.send('gpu-info')
-    ipcRenderer.on('gpu-info', (e, data) => {
-            console.log(data);
+        ipcRenderer.send('temps')
+        const ctx1 = document.getElementById('myChart-1');
+    ipcRenderer.on('temps', (e, data) => {
+           
+        const myChart = new Chart(ctx1, {
+                type: 'pie',
+
+                data: {
+                    labels: ['1', '2'],
+                    datasets: [{
+
+
+                        data: [data[0], data[1]],
+
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    aspectRatio: 0.9,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: 5,
+
+                    },
+                    plugins: {
+                        // subtitle: {
+
+
+                        // }
+                        //  title: {
+                        //     display: true,
+                        //     text: 'Memory'
+                        // }
+                    }
+                }
+
+            })
+
+
         });
+    
     </script>
 
 </body>
