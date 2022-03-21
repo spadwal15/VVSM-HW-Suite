@@ -1,4 +1,6 @@
+
 import clr
+import sys
 
 
 openhardwaremonitor_hwtypes = ['Mainboard', 'SuperIO', 'CPU',
@@ -10,6 +12,12 @@ openhardwaremonitor_sensortypes = ['Voltage', 'Clock', 'Temperature', 'Load',
 
 def initialize_openhardwaremonitor():
     with open('Logs\Temps.txt', 'w') as outfile:
+        outfile.truncate()
+    with open('Logs\Load.txt', 'w') as outfile:
+        outfile.truncate()
+    with open('Logs\Power.txt', 'w') as outfile:
+        outfile.truncate()
+    with open('Logs\Fan.txt', 'w') as outfile:
         outfile.truncate()
     with open('Logs\Temps1.txt', 'w') as outfile:
         outfile.truncate()
@@ -51,16 +59,20 @@ def parse_sensor(sensor):
 
         if sensor.SensorType == sensortypes.index('Temperature'):
             with open('Logs\Temps.txt', 'a') as outfile:
-                outfile.write(u"%s %s Temperature Sensor #%i %s : %s\n" % (
+                outfile.write(u"%s %s Temperature Sensor    #%i %s : %s Deg C\n" % (
                     hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
 
             with open('Logs\Temps1.txt', 'a') as outfile:
                 outfile.write(u"%s\n" % (sensor.Value))
 
-            print(u"%s %s Temperature Sensor #%i %s - %s\u00B0C" %
+            print(u"%s %s Temperature Sensor #%i %s - %s Deg C" %
                   (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
 
         elif sensor.SensorType == sensortypes.index('Fan'):
+            with open('Logs\Fan.txt', 'a') as outfile:
+                outfile.write(u"%s %s Fan Speed #%i %s : %s RPM" %
+                  (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
+
             print(u"%s %s Fan Speed #%i %s - %s RPM" %
                   (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
 
@@ -73,10 +85,18 @@ def parse_sensor(sensor):
                   (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
 
         elif sensor.SensorType == sensortypes.index('Load'):
+            with open('Logs\Load.txt', 'a') as outfile:
+                outfile.write(u"Load #%i %s :          %s Percent \n" %
+                 (  sensor.Index, sensor.Name, sensor.Value))
+
             print(u"%s %s Load #%i %s - %s Percent" %
                   (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
 
         elif sensor.SensorType == sensortypes.index('Power'):
+            with open('Logs\Power.txt', 'a') as outfile:
+                outfile.write(u"%s %s Power #%i %s    :       %s W\n" %
+                  (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
+
             print(u"%s %s Power #%i %s - %s W" %
                   (hardwaretypes[sensor.Hardware.HardwareType], sensor.Hardware.Name, sensor.Index, sensor.Name, sensor.Value))
 
@@ -85,3 +105,5 @@ if __name__ == "__main__":
     print("OpenHardwareMonitor:")
     HardwareHandle = initialize_openhardwaremonitor()
     fetch_stats(HardwareHandle)
+    
+    # sys.stdout.flush()

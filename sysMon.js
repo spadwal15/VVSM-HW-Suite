@@ -2,6 +2,162 @@ const si = require('systeminformation');
 const { ipcMain } = require('electron')
 const os = require('os');
 const fs = require('fs');
+const spawn = require("child_process").spawn;
+
+
+
+
+
+ipcMain.on('pythonProgram', e => {
+    let pythonProcess = spawn('python', ["./sysMon.py"]);
+    pythonProcess.stdout.on('data', (data) => {
+
+        fs.readFile('Logs/Temps.txt', encoding = 'utf8', (err, data) => {
+            if (err) {
+                console.error(err)
+                return
+            }
+            
+            let temps = data.toString().split("\n");
+            let tempsStr = ['Nuvoton'];
+            let tempsDataArray = [];
+            let hddStr = 'HDD';
+            let hddArray = [];
+            let cpuStr = 'CPU Core';
+            let cpuArray = [];
+           
+
+            for (i in temps) {
+                if (temps[i].match(cpuStr)) {
+                    let tempSlice1 = temps[i].slice(-26, -12)
+                    let tempsSlice2 = temps[i].slice(-12)
+                    // console.log(tempSlice1)
+                    // console.log(tempsSlice2)
+                    cpuArray.push(tempSlice1, tempsSlice2);
+                }
+                if (temps[i].match(hddStr)) {
+
+                    let hddSlice1 = temps[i].slice(0, 26)
+                    let hddSlice2 = temps[i].slice(-13);
+                    hddArray.push(hddSlice1, hddSlice2);
+                }
+               
+                if(temps[i].match(tempsStr)){
+                    let tempsDataSlice1 = temps[i].slice(67,-6);
+                   
+                    tempsDataArray.push(parseInt(tempsDataSlice1))
+                }
+            }
+
+            e.sender.send('pythonProgram', [cpuArray, hddArray,tempsDataArray]);
+            console.log(tempsDataArray)
+
+        });
+    
+
+    fs.readFile('Logs/Load.txt', encoding = 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+      
+        let gpuLoad = data.toString().split("\n");
+        let gpuStr = ['Video Engine ', 'GPU Frame Buffer', 'Bus Interface','GPU Memory','GPU Core'];
+        let gpuArray = [];
+        let hddLoadStr='Load #0 Used Space'
+        let hddLoadArray=[];
+        let hddLoadArray1=[];
+        let hddLoadStr_1='CPU Core'
+        let hddLoadArray2=[];
+
+        for (i in gpuLoad) {
+            for (j in gpuStr){
+                if (gpuLoad[i].match(gpuStr[j])) {
+                    let gpuLoadSlice1 = gpuLoad[i].slice(0, 27 );
+                    let gpuLoadSlice2 = gpuLoad[i].slice(-19);
+                    gpuArray.push(gpuLoadSlice1, gpuLoadSlice2)
+                }}
+                if(gpuLoad[i].match(hddLoadStr)){
+                    let hddLoadSlice1 = gpuLoad[i].slice(0, 20 );
+                    let hddLoadSlice2 = gpuLoad[i].slice(-19);
+                    hddLoadArray.push(hddLoadSlice1, hddLoadSlice2)
+                }
+                if(gpuLoad[i].match(hddLoadStr_1)){
+                    let hddLoadDataSlice1 = gpuLoad[i].slice(26,-9 );
+             
+                    hddLoadArray1.push(parseInt(hddLoadDataSlice1))
+                }
+                if(gpuLoad[i].match(hddLoadStr_1)){
+                    let hddLoadDataSlice1 = gpuLoad[i].slice(26,-9 );
+             
+                    hddLoadArray2.push(parseInt(hddLoadDataSlice1))
+                }
+
+        }
+
+        console.log(gpuArray)
+        console.log(hddLoadArray)
+        console.log(hddLoadArray1)
+        e.sender.send('pythonProgram1',[gpuArray,hddLoadArray,hddLoadArray1,hddLoadArray2]);
+
+
+    })
+    fs.readFile('Logs/Power.txt', encoding = 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+        console.log(data)
+        let power = data.toString().split("\n");
+        let powerStr = 'Power';
+        let powerArray = [];
+        console.log(power)
+        for (i in power) {
+           
+                if(power[i].match(powerStr)){
+                    let powerSlice1 = power[i].slice(23,49);
+                    let powerSlice2 = power[i].slice(-13);
+                    powerArray.push(powerSlice1, powerSlice2)
+                }
+
+        }
+
+        console.log(powerArray)
+        
+        e.sender.send('pythonProgram2',powerArray);
+
+
+    })
+    fs.readFile('Logs/Fan.txt', encoding = 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+        
+        let fan = data.toString().split("\n");
+        let fanStr = 'Fan Speed';
+        let fanArray = [];
+        console.log(fan)
+        for (i in fan) {
+           
+                if(fan[i].match(fanStr)){
+                    let fanSlice1 = fan[i].slice(-34,-13);
+                    let fanSlice2 = fan[i].slice(-13);
+                    fanArray.push( fanSlice1, fanSlice2)
+                }
+
+        }
+
+        console.log(fanArray)
+        
+        e.sender.send('pythonProgram3',fanArray);
+
+
+    })
+})
+})
+// });
+
 
 //system monitoring
 const sysMon = () => {
@@ -90,60 +246,6 @@ const sysMon = () => {
             e.sender.send('memory', memory);
             //console.log(cpuInfo);
         }).catch(error => console.error(error));
-    });
-
-    ipcMain.on('cputemps', e => {
-        // Temps
-        fs.readFile('Logs/Temps.txt', encoding = 'utf8', (err, data) => {
-            if (err) {
-                console.error(err)
-                return
-            }
-            
-            let temps = data.toString().split("\n");
-            let cpuStr='CPU Core';
-            let cpuArray=[]; 
-            for (i in temps) {
-               if(temps[i].match(cpuStr)){
-                let tempSlice=temps[i].slice(-16)
-                cpuArray.push(tempSlice);
-               }
-            }
-            e.sender.send('cputemps', cpuArray);
-
-            console.log(cpuArray);
-           
-           
-        })
-    });
-    
-    ipcMain.on('hddtemps', e => {
-        // Temps
-        fs.readFile('Logs/Temps.txt', encoding = 'utf8', (err, data) => {
-            if (err) {
-                console.error(err)
-                return
-            }
-            
-            let temps = data.toString().split("\n");
-            let hddStr='HDD';
-            let hddArray=[];
-            for (i in temps) {
-               if(temps[i].match(hddStr)){
-                
-                let hddSlice=temps[i].slice(0,24)+' '+temps[i].slice(-19);
-                
-                hddArray.push(hddSlice);
-              
-
-               }
-            }
-            e.sender.send('hddtemps', hddArray);
-
-            console.log(hddArray);
-           
-           
-        })
     });
 }
 

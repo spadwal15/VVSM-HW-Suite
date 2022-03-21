@@ -7,12 +7,13 @@ const fs = require('fs');
 
 //importing functions
 const sysMon = require('./sysMon.js')
+
 let mainController;
 
 app.on('ready', () => {
 
     mainController = new BrowserWindow({
-
+    
     frame:true,
     width:1280,
     height:1080,
@@ -26,8 +27,10 @@ app.on('ready', () => {
       contextIsolation:false
     }
   });
+ 
     mainController.setMenu(null);
     mainController.webContents.openDevTools();
+
   //load HTML
   mainController.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -37,3 +40,4 @@ app.on('ready', () => {
 });
 
 sysMon();
+
