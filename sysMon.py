@@ -1,6 +1,7 @@
 
+
 import clr
-import sys
+import sys,os
 
 
 openhardwaremonitor_hwtypes = ['Mainboard', 'SuperIO', 'CPU',
@@ -22,8 +23,12 @@ def initialize_openhardwaremonitor():
     with open('Logs\Temps1.txt', 'w') as outfile:
         outfile.truncate()
 
-    file = r'C:\Users\Rohit\Desktop\Mayur Files\VVSM-HW-Suite-main\DLLs\OpenHardwareMonitorLib.dll'
-    clr.AddReference(file)
+    dll_dir = './'
+    dllname='OpenHardwareMonitorLib'     
+    path = r'%s%s' % ( dll_dir,dllname)
+    sys.path.append(os.getcwd())
+    clr.AddReference(path)
+    # clr.AddReference('\OpenHardwareMonitorLib.dll')
 
     from OpenHardwareMonitor import Hardware
 
