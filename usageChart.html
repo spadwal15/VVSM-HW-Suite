@@ -94,7 +94,7 @@
                 class=" w-10/12 h-5/6 p-2 m-2 border-2 justify-self-center border-purple-500 hover:border-purple-400 flex-grow text-center rounded-xl  bg-gray-400   shadow-lg ">
                 <div class="flex flex-col divide-y divide-solid divide-purple-500 active:divide-purple-500">
                     <h1 class="flex justify-between gap-1 font-sans text-lg font-semibold  pl-2 mb-1 text-black">
-                        Temperature Sensor Nuvoton  <i class="fa fa-info-circle pt-1 pr-1 text-black cursor-pointer" title="Temperature Sensor Nuvoton" aria-hidden="true"></i>
+                        CPU Core Load  <i class="fa fa-info-circle pt-1 pr-1 text-black cursor-pointer" title="Temperature Sensor Nuvoton" aria-hidden="true"></i>
                     </h1>
                     <div>
                         <canvas id="myChart-1"></canvas>
@@ -116,7 +116,7 @@
             <div
                 class=" w-10/12 h-5/6 p-2 m-2 border-2 justify-self-center border-purple-500 hover:border-purple-400 flex-grow text-center rounded-xl  bg-gray-400   shadow-lg ">
                 <div class="flex flex-col divide-y divide-solid divide-purple-500 active:divide-purple-500">
-                    <h1 class="flex justify-between gap-1 font-sans text-lg font-semibold  pl-2 mb-1 text-black">CPU load Percentage<i
+                    <h1 class="flex justify-between gap-1 font-sans text-lg font-semibold  pl-2 mb-1 text-black"><i
                             class="fa fa-info-circle pt-1 pr-1 text-black cursor-pointer" title="CPU load Percentage" aria-hidden="true"></i></h1>
                     <div class=" text-left pl-2 break-all pt-2">
                         <canvas id="myChart-3"></canvas>
@@ -133,7 +133,7 @@
         ipcRenderer.send('memory');
         const ctx = document.getElementById('myChart');
         ipcRenderer.on('memory', (e, data) => {
-            console.log(data)
+            // console.log(data)
 
             const myChart = new Chart(ctx, {
                 type: 'pie',
@@ -185,26 +185,27 @@
         });
 
         ipcRenderer.send('pythonProgram')
+        ipcRenderer.send('pythonProgram1')
         const ctx1 = document.getElementById('myChart-1');
-        ipcRenderer.on('pythonProgram', (e, data) => {
-            let cpuDataTemps = data[2]
-
+        ipcRenderer.on('pythonProgram1', (e, data) => {
+            let cpuCoreLoad = data[2]
+            let labels="Percentage"
             const myChart_1 = new Chart(ctx1, {
-                type: 'bar',
-
+                type: 'line',
+               
                 data: {
-                    labels: ['Temp1', 'Temp2', 'Temp3', 'Temp4', 'Temp5', 'Temp6'],
+                    
+                    labels: ['Core Load-1','Core Load-2','Core Load-3','Core Load-3'],
                     datasets: [{
-
-                        data: [cpuDataTemps[1], cpuDataTemps[2], cpuDataTemps[3], cpuDataTemps[4], cpuDataTemps[5], cpuDataTemps[6]],
+                        label:labels,
+                        data: [cpuCoreLoad[0],cpuCoreLoad[1],cpuCoreLoad[2],cpuCoreLoad[3]],
 
                         backgroundColor: [
                             'rgb(74, 169, 123,1)',
                             'rgb(66, 233, 153,1)',
                             'rgb(243, 81, 231,1)',
-                            'rgb(210, 42, 86,1)',
-                            'rgb(60, 173, 236,1)',
-                            'rgb(153, 127, 33,1)'
+                            'rgb(210, 42, 86,1)'
+                
 
 
                         ],
@@ -212,9 +213,8 @@
                             'rgba(0, 0, 0, 1)',
                             'rgba(0, 0, 0, 1)',
                             'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
                             'rgba(0, 0, 0, 1)'
+                           
 
                         ],
                         borderWidth: 1
@@ -246,139 +246,140 @@
 
             })
 
-            ipcRenderer.send('pythonProgram1');
-            const ctx2 = document.getElementById('myChart-2');
-            ipcRenderer.on('pythonProgram1', (e, data) => {
-                let labels = [];
-                let loadData = data[2]
+            // ipcRenderer.send('pythonProgram1');
+            // const ctx2 = document.getElementById('myChart-2');
+            // ipcRenderer.on('pythonProgram1', (e, data) => {
+            //     let labels = [];
+            //     let loadData = data[2]
               
-                for (i in loadData) {
-                    labels.push('Used Space-' + i)
-                }
+            //     for (i in loadData) {
+            //         labels.push('Used Space-' + i)
+            //     }
                 
-                const myChart_2 = new Chart(ctx2, {
-                    type: 'doughnut',
+            //     const myChart_2 = new Chart(ctx2, {
+            //         type: 'doughnut',
 
-                    data: {
-                        labels: labels,
-                        datasets: [{
-
-
-                            data: loadData,
-
-                            backgroundColor: [
-                                'rgba(0, 255, 255, 1)',
-                                'rgba(230, 42, 255, 1)',
-                                'rgba(255, 99, 132,1)',
-                               'rgba(127, 234, 2, 0.8)'
-                            ],
-                            borderColor: [
-                                'rgba(0, 255, 255, 1)',
-                                'rgba(230, 42, 255, 1)',
-                                'rgba(255, 99, 132,1)',
-                                ' rgba(127, 234, 2, 0.8)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-
-                    options: {
-                        responsive: true,
-                        aspectRatio: 1.1,
-                        maintainAspectRatio: false,
-                        layout: {
-                            padding: 5,
-
-                        },
-                        plugins: {
-                            // subtitle: {
+            //         data: {
+            //             labels: labels,
+            //             datasets: [{
 
 
-                            // }
-                            //  title: {
-                            //     display: true,
-                            //     text: 'Memory'
-                            // }
-                        }
-                    }
+            //                 data: loadData,
 
-                })
+            //                 backgroundColor: [
+            //                     'rgba(0, 255, 255, 1)',
+            //                     'rgba(230, 42, 255, 1)',
+            //                     'rgba(255, 99, 132,1)',
+            //                    'rgba(127, 234, 2, 0.8)'
+            //                 ],
+            //                 borderColor: [
+            //                     'rgba(0, 255, 255, 1)',
+            //                     'rgba(230, 42, 255, 1)',
+            //                     'rgba(255, 99, 132,1)',
+            //                     ' rgba(127, 234, 2, 0.8)'
+            //                 ],
+            //                 borderWidth: 1
+            //             }]
+            //         },
+
+            //         options: {
+            //             responsive: true,
+            //             aspectRatio: 1.1,
+            //             maintainAspectRatio: false,
+            //             layout: {
+            //                 padding: 5,
+
+            //             },
+            //             plugins: {
+            //                 // subtitle: {
 
 
-            });
+            //                 // }
+            //                 //  title: {
+            //                 //     display: true,
+            //                 //     text: 'Memory'
+            //                 // }
+            //             }
+            //         }
+
+            //     })
+
+
+            // });
             
-            ipcRenderer.send('pythonProgram1');  
-            const ctx3 = document.getElementById('myChart-3');
-            ipcRenderer.on('pythonProgram1', (e, data) => {
-                let labels= [];
-                let loadData1= data[3]
-                for (i in loadData1) {
-                    labels.push('Load-' + i)
-                }
-                console.log(loadData1)
-                const myChart_3 = new Chart(ctx3, {
-                    type: 'line',
+            // ipcRenderer.send('pythonProgram1');  
+            // const ctx3 = document.getElementById('myChart-3');
+            // ipcRenderer.on('pythonProgram1', (e, data) => {
+            //     let labels= [];
+            //     console.log (data)
+            //     let loadData1= data[3]
+            //     for (i in loadData1) {
+            //         labels.push('Load-' + i)
+            //     }
+            //     console.log(loadData1)
+            //     const myChart_3 = new Chart(ctx3, {
+            //         type: 'line',
 
-                    data: {
-                        labels: labels,
-                        datasets: [{
-
-
-                            data: loadData1,
-
-                            backgroundColor: [
-                            ' rgba(127, 234, 2, 0.8)',
-                            'rgba(255, 99, 132,1)',
-                              'rgba(230, 42, 255, 1)',
-                              'rgba(0, 255, 255, 1)',
-                            ],
-                            borderColor: [
-                            ' rgba(127, 234, 2, 0.8)',
-                            'rgba(255, 99, 132,1)',
-                              'rgba(230, 42, 255, 1)',
-                              'rgba(0, 255, 255, 1)',
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-
-                    options: {
-                        responsive: true,
-                        aspectRatio: 1.1,
-                        maintainAspectRatio: false,
-                        layout: {
-                            padding: 5,
-
-                        },
-                        plugins: {
-                            // subtitle: {
+            //         data: {
+            //             labels: labels,
+            //             datasets: [{
 
 
-                            // }
-                            //  title: {
-                            //     display: true,
-                            //     text: 'Memory'
-                            // }
-                        },
-                        scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            grid: {
-                                display: false
-                            }
-                        },
+            //                 data: loadData1,
 
-                    },
-                    }
+            //                 backgroundColor: [
+            //                 ' rgba(127, 234, 2, 0.8)',
+            //                 'rgba(255, 99, 132,1)',
+            //                   'rgba(230, 42, 255, 1)',
+            //                   'rgba(0, 255, 255, 1)',
+            //                 ],
+            //                 borderColor: [
+            //                 ' rgba(127, 234, 2, 0.8)',
+            //                 'rgba(255, 99, 132,1)',
+            //                   'rgba(230, 42, 255, 1)',
+            //                   'rgba(0, 255, 255, 1)',
+            //                 ],
+            //                 borderWidth: 1
+            //             }]
+            //         },
 
-                })
+            //         options: {
+            //             responsive: true,
+            //             aspectRatio: 1.1,
+            //             maintainAspectRatio: false,
+            //             layout: {
+            //                 padding: 5,
+
+            //             },
+            //             plugins: {
+            //                 // subtitle: {
+
+
+            //                 // }
+            //                 //  title: {
+            //                 //     display: true,
+            //                 //     text: 'Memory'
+            //                 // }
+            //             },
+            //             scales: {
+            //             x: {
+            //                 grid: {
+            //                     display: false
+            //                 }
+            //             },
+            //             y: {
+            //                 grid: {
+            //                     display: false
+            //                 }
+            //             },
+
+            //         },
+            //         }
+
+            //     })
 
             })
-            });
+            // });
       
 
     </script>

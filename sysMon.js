@@ -50,7 +50,7 @@ ipcMain.on('pythonProgram', e => {
             }
 
             e.sender.send('pythonProgram', [cpuArray, hddArray,tempsDataArray]);
-            console.log(tempsDataArray)
+            // console.log(tempsDataArray)
 
         });
     
@@ -64,11 +64,12 @@ ipcMain.on('pythonProgram', e => {
         let gpuLoad = data.toString().split("\n");
         let gpuStr = ['Video Engine ', 'GPU Frame Buffer', 'Bus Interface','GPU Memory','GPU Core'];
         let gpuArray = [];
-        let hddLoadStr='Load #0 Used Space'
+        let hddLoadStr='Load #0 Used'
         let hddLoadArray=[];
-        let hddLoadArray1=[];
         let hddLoadStr_1='CPU Core'
-        let hddLoadArray2=[];
+        let hddLoadArray1=[];
+        
+        // let hddLoadArray2=[];
 
         for (i in gpuLoad) {
             for (j in gpuStr){
@@ -85,20 +86,21 @@ ipcMain.on('pythonProgram', e => {
                 if(gpuLoad[i].match(hddLoadStr_1)){
                     let hddLoadDataSlice1 = gpuLoad[i].slice(26,-9 );
              
-                    hddLoadArray1.push(parseInt(hddLoadDataSlice1))
+                    hddLoadArray1.push(hddLoadDataSlice1)
                 }
-                if(gpuLoad[i].match(hddLoadStr_1)){
-                    let hddLoadDataSlice1 = gpuLoad[i].slice(26,-9 );
+                // if(gpuLoad[i].match(hddLoadStr_1)){
+                //     let hddLoadDataSlice1 = gpuLoad[i].slice(26,-9 );
              
-                    hddLoadArray2.push(parseInt(hddLoadDataSlice1))
-                }
+                //     hddLoadArray2.push(parseInt(hddLoadDataSlice1))
+                // }
 
         }
 
         console.log(gpuArray)
         console.log(hddLoadArray)
         console.log(hddLoadArray1)
-        e.sender.send('pythonProgram1',[gpuArray,hddLoadArray,hddLoadArray1,hddLoadArray2]);
+        
+        e.sender.send('pythonProgram1',[gpuArray,hddLoadArray,hddLoadArray1]);
 
 
     })
@@ -107,11 +109,11 @@ ipcMain.on('pythonProgram', e => {
             console.error(err)
             return
         }
-        console.log(data)
+        // console.log(data)
         let power = data.toString().split("\n");
         let powerStr = 'Power';
         let powerArray = [];
-        console.log(power)
+        // console.log(power)
         for (i in power) {
            
                 if(power[i].match(powerStr)){
@@ -122,7 +124,7 @@ ipcMain.on('pythonProgram', e => {
 
         }
 
-        console.log(powerArray)
+        // console.log(powerArray)
         
         e.sender.send('pythonProgram2',powerArray);
 
@@ -137,7 +139,7 @@ ipcMain.on('pythonProgram', e => {
         let fan = data.toString().split("\n");
         let fanStr = 'Fan Speed';
         let fanArray = [];
-        console.log(fan)
+        // console.log(fan)
         for (i in fan) {
            
                 if(fan[i].match(fanStr)){
@@ -148,7 +150,7 @@ ipcMain.on('pythonProgram', e => {
 
         }
 
-        console.log(fanArray)
+        // console.log(fanArray)
         
         e.sender.send('pythonProgram3',fanArray);
 
