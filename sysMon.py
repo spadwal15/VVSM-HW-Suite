@@ -24,7 +24,7 @@ def initialize_openhardwaremonitor():
         outfile.truncate()
 
     dll_dir = './'
-    dllname='OpenHardwareMonitorLib'     
+    dllname='OpenHardwareMonitorLib'
     path = r'%s%s' % ( dll_dir,dllname)
     sys.path.append(os.getcwd())
     clr.AddReference(path)
@@ -110,5 +110,5 @@ if __name__ == "__main__":
     print("OpenHardwareMonitor:")
     HardwareHandle = initialize_openhardwaremonitor()
     fetch_stats(HardwareHandle)
-    
+
     # sys.stdout.flush()
