@@ -126,10 +126,10 @@
                             class="fa fa-info-circle pt-1 pr-1 text-black cursor-pointer" title="CPU load Percentage" aria-hidden="true"></i></h1>
                     <div class=" text-left pl-2 break-all pt-2">
                         <div class="ctx-3">
-                            
+
                               <img class="animate-spin object-contain" src="./icons8-fan-speed-96 (1).png" alt="">
                         </div>
-                        
+
                     </div>
                 </div>
             </div> -->
@@ -137,7 +137,7 @@
     </div>
 
     <script>
-         
+
 
         let useChart;
         let myChart_1;
@@ -208,7 +208,7 @@
 
                 data: {
 
-                    labels: ['Core Load-1','Core Load-2','Core Load-3','Core Load-3'],
+                    labels: ['Core Load-0','Core Load-1','Core Load-2','Core Load-3'],
                     datasets: [{
                         label:labels,
                         data: [cpuCoreLoad[0],cpuCoreLoad[1],cpuCoreLoad[2],cpuCoreLoad[3]],
@@ -256,9 +256,9 @@
 
                     },
                 }
-               
+
             })
-            
+
         })
 
 
@@ -268,7 +268,7 @@
                 let labels = [];
                 let loadData = data[3]
                 console.log(loadData)
-                
+
 
                 for (i in loadData) {
                     labels.push('Used Space-' + i)
@@ -325,9 +325,9 @@
                 myChart.destroy()
             });
 
-           
+
     //         setInterval(function () {
-         
+
     //             ipcRenderer.send('pythonProgram3');
 
     // }, 1000);
@@ -335,11 +335,11 @@
     //             let labels= [];
     //             let loadData1= data[1]
     //             const ctx3 = document.getElementById('myChart-3');
-                
-                
+
+
     //             console.log(loadData1)
-               
-                
+
+
     //         })
             // });
 
