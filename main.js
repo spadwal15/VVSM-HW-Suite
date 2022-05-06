@@ -13,7 +13,7 @@ let mainController;
 app.on('ready', () => {
 
     mainController = new BrowserWindow({
-    
+
     frame:true,
     width:1280,
     height:1080,
@@ -23,11 +23,11 @@ app.on('ready', () => {
     maxHeight:1080,
     backgroundColor: "#3c3c44",
     webPreferences:{
-      nodeIntegration:true,
-      contextIsolation:false
+    nodeIntegration:true,
+    contextIsolation:false,
     }
   });
- 
+
     mainController.setMenu(null);
     mainController.webContents.openDevTools();
 
@@ -40,4 +40,3 @@ app.on('ready', () => {
 });
 
 sysMon();
-

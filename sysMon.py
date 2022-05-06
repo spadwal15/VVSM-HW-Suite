@@ -11,7 +11,8 @@ parent_dir = os.getcwd()
 path = os.path.join(parent_dir, directory)
 
 # Create the directory
-os.mkdir(path)
+if not(os.path.isdir(path)):
+    os.mkdir(path)
 
 openhardwaremonitor_hwtypes = ['Mainboard', 'SuperIO', 'CPU',
                                'RAM', 'GpuNvidia', 'GpuAti', 'TBalancer', 'Heatmaster', 'HDD']
@@ -32,7 +33,7 @@ def initialize_openhardwaremonitor():
     with open('Logs\Temps1.txt', 'w') as outfile:
         outfile.truncate()
 
-    dll_dir = './DLLs'
+    dll_dir = './'
     dllname='OpenHardwareMonitorLib'
     path = r'%s%s' % ( dll_dir,dllname)
     sys.path.append(os.getcwd())
