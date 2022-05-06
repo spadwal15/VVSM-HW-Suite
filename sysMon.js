@@ -68,6 +68,7 @@ ipcMain.on('pythonProgram', e => {
         let hddLoadArray=[];
         let hddLoadStr_1='CPU Core'
         let hddLoadArray1=[];
+        hddLoadArray2=[];
 
         // let hddLoadArray2=[];
 
@@ -93,14 +94,18 @@ ipcMain.on('pythonProgram', e => {
 
                 //     hddLoadArray2.push(parseInt(hddLoadDataSlice1))
                 // }
-
+                if(gpuLoad[i].match(hddLoadStr)){
+                    let hddLoadSlice2 = gpuLoad[i].slice(-18,-9);
+                    hddLoadArray2.push( hddLoadSlice2)
+                }
         }
 
         console.log(gpuArray)
         console.log(hddLoadArray)
         console.log(hddLoadArray1)
+        console.log(hddLoadArray2)
 
-        e.sender.send('pythonProgram1',[gpuArray,hddLoadArray,hddLoadArray1]);
+        e.sender.send('pythonProgram1',[gpuArray,hddLoadArray,hddLoadArray1,hddLoadArray2]);
 
 
     })
@@ -130,6 +135,9 @@ ipcMain.on('pythonProgram', e => {
 
 
     })
+
+
+
     fs.readFile('Logs/Fan.txt', encoding = 'utf8', (err, data) => {
         if (err) {
             console.error(err)
@@ -139,6 +147,8 @@ ipcMain.on('pythonProgram', e => {
         let fan = data.toString().split("\n");
         let fanStr = 'Fan Speed';
         let fanArray = [];
+        let fanArray1 = [];
+
         // console.log(fan)
         for (i in fan) {
 
@@ -147,18 +157,23 @@ ipcMain.on('pythonProgram', e => {
                     let fanSlice2 = fan[i].slice(-13);
                     fanArray.push( fanSlice1, fanSlice2)
                 }
+                if(fan[i].match(fanStr)){
+
+                    let fanSlice2 = fan[i].slice(-13);
+                    fanArray1.push(fanSlice2)
+                }
 
         }
 
-        // console.log(fanArray)
+        console.log(fanArray1)
 
-        e.sender.send('pythonProgram3',fanArray);
+        e.sender.send('pythonProgram3',fanArray,fanArray1);
 
 
     })
+
 })
 })
-// });
 
 
 //system monitoring

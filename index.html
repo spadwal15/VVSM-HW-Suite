@@ -45,11 +45,11 @@
     });
 
 
-    ipcRenderer.on('cpu-temp-info', (e, data) => {
-      document.getElementById("cpuTempDetail0").innerHTML = data[0];
-      document.getElementById("cpuTempDetail1").innerHTML = data[1];
-      document.getElementById("cpuTempDetail2").innerHTML = data[2];
-    });
+    // ipcRenderer.on('cpu-temp-info', (e, data) => {
+    //   document.getElementById("cpuTempDetail0").innerHTML = data[0];
+    //   document.getElementById("cpuTempDetail1").innerHTML = data[1];
+    //   document.getElementById("cpuTempDetail2").innerHTML = data[2];
+    // });
 
     //gpu details
     ipcRenderer.send('gpu-info')
@@ -182,7 +182,7 @@
 
             <p class="mt-5 text-xl font-sans  font-semibold text-black">Cores : <span id="cpuDetail2"
                 class="text-xl font-sans font-normal text-black"></span></p>
-
+<!-- 
             <p class="mt-5 text-xl font-sans  font-semibold text-black">Main: <span id="cpuTempDetail0"
                 class="text-xl font-sans font-normal text-black"></span></p>
 
@@ -190,7 +190,7 @@
                 class="text-xl font-sans font-normal text-black"></span></p>
 
             <p class="mt-5 text-xl font-sans  font-semibold text-black">Cores: <span id="cpuTempDetail2"
-                class="text-xl font-sans font-normal text-black"></span></p>
+                class="text-xl font-sans font-normal text-black"></span></p> -->
 
           </div>
         </div>
